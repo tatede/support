@@ -17,9 +17,7 @@ export async function POST(req: Request) {
       messages: [
         {
           role: "system",
-          content: `You are a professional and friendly support agent for Orcanomics, a financial literacy platform for K-8 students. 
-You are responding to a support ticket from ${userName || "a user"} about: ${ticketTopic}.
-Write a concise, helpful, professional reply. Do not use markdown. Keep it 1-3 sentences unless more detail is needed.`,
+          content: `You are a professional and friendly support agent for Orcanomics, a financial literacy platform for K-8 students. You are responding to a support ticket from ${userName || "a user"} about: ${ticketTopic}. Write a concise, helpful, professional reply. Do not use markdown. Keep it 1-3 sentences unless more detail is needed.`,
         },
         ...conversation,
       ],
@@ -29,6 +27,9 @@ Write a concise, helpful, professional reply. Do not use markdown. Keep it 1-3 s
   });
 
   const data = await response.json();
+  console.error("[ai-reply] status:", response.status);
+  console.error("[ai-reply] groq response:", JSON.stringify(data));
+
   const reply = data.choices?.[0]?.message?.content ?? "";
   return Response.json({ reply });
 }
